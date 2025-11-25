@@ -1,0 +1,206 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:FSCenter.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="700"
+             x:Class="FSCenter.Views.ClubsView"
+             x:DataType="vm:ClubsViewModel"
+             Background="White">
+
+    <Grid RowDefinitions="Auto,Auto,*" Margin="20">
+        
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,15">
+            <TextBlock Grid.Column="0"
+                      Text="Клуби та секції"
+                      FontSize="24"
+                      Foreground="Black"
+                      FontWeight="Bold"
+                      VerticalAlignment="Center"/>
+            
+            <TextBlock Grid.Column="1"
+                      FontSize="13"
+                      Foreground="Gray"
+                      VerticalAlignment="Center">
+                <Run Text="Всього:"/>
+                <Run Text="{Binding Clubs.Count}" FontWeight="Bold"/>
+            </TextBlock>
+        </Grid>
+
+        <Border Grid.Row="1" 
+                Background="#F8F9FA"
+                Padding="12"
+                CornerRadius="6"
+                BorderBrush="#DEE2E6"
+                BorderThickness="1"
+                Margin="0,0,0,12">
+            
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBox Grid.Column="0"
+                        Text="{Binding SearchText}"
+                        Watermark="Пошук..."
+                        FontSize="13"
+                        Height="32"/>
+                
+                <Button Grid.Column="1"
+                       Content="Очистити"
+                       Command="{Binding ClearSearchCommand}"
+                       Padding="12,6"
+                       FontSize="12"
+                       Margin="8,0,0,0"/>
+            </Grid>
+            
+        </Border>
+
+        <ScrollViewer Grid.Row="2">
+            <StackPanel Spacing="8">
+                
+                <TextBlock Text="{Binding ErrorMessage}"
+                          Foreground="Red"
+                          FontSize="12"
+                          TextWrapping="Wrap"
+                          Margin="0,0,0,8"
+                          IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                
+                <ItemsControl ItemsSource="{Binding FilteredClubs}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="12"
+                                   Margin="0,0,0,8"
+                                   Background="#FFFFFF"
+                                   CornerRadius="6"
+                                   BorderBrush="#DEE2E6"
+                                   BorderThickness="1">
+                                
+                                <Grid RowDefinitions="Auto,Auto,Auto">
+                                    
+                                    <TextBlock Grid.Row="0"
+                                              Text="{Binding Name}"
+                                              FontSize="18"
+                                              FontWeight="Bold"
+                                              Foreground="#212529"
+                                              Margin="0,0,0,8"/>
+                                    
+                                    <Grid Grid.Row="1" ColumnDefinitions="*,*,*" ColumnSpacing="8" Margin="0,0,0,6">
+                                        
+                                        <Border Grid.Column="0" Background="#E3F2FD" Padding="10" CornerRadius="4">
+                                            <StackPanel Spacing="4">
+                                                <TextBlock Text="Тренер" 
+                                                          FontSize="14" 
+                                                          Foreground="#1976D2"
+                                                          FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding TrainerName}" 
+                                                          FontSize="14" 
+                                                          Foreground="#0D47A1"
+                                                          FontWeight="SemiBold"
+                                                          TextWrapping="Wrap"/>
+                                                <TextBlock FontSize="14" 
+                                                          Foreground="#1976D2"
+                                                          TextWrapping="Wrap"
+                                                          IsVisible="{Binding TrainerPhone, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                                    <Run Text="Тел:"/>
+                                                    <Run Text="{Binding TrainerPhone}"/>
+                                                </TextBlock>
+                                                <TextBlock FontSize="14" 
+                                                          Foreground="#1976D2"
+                                                          TextWrapping="Wrap"
+                                                          IsVisible="{Binding TrainerEmail, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                                    <Run Text="Email:"/>
+                                                    <Run Text="{Binding TrainerEmail}"/>
+                                                </TextBlock>
+                                             </StackPanel>
+                                        </Border>
+                                        
+                                        <Border Grid.Column="1" Background="#FFF3E0" Padding="10" CornerRadius="4">
+                                            <StackPanel Spacing="4">
+                                                <TextBlock Text="Приміщення" 
+                                                          FontSize="14" 
+                                                          Foreground="#E65100"
+                                                          FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding RoomInfo}" 
+                                                          FontSize="14" 
+                                                          Foreground="#BF360C"
+                                                          TextWrapping="Wrap"/>
+                                                <TextBlock FontSize="14" 
+                                                          Foreground="#E65100"
+                                                          IsVisible="{Binding RoomCapacity}">
+                                                    <Run Text="Місткість:"/>
+                                                    <Run Text="{Binding RoomCapacity}"/>
+                                                    <Run Text="осіб"/>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </Border>
+                                        
+                                        <Border Grid.Column="2" Background="#E8F5E9" Padding="10" CornerRadius="4">
+                                            <StackPanel Spacing="6">
+                                                <TextBlock Text="Ціни"
+                                                          FontSize="14"
+                                                          Foreground="#388E3C"
+                                                          FontWeight="SemiBold"/>
+                                                <TextBlock FontSize="14" Foreground="#2E7D32">
+                                                    <Run Text="8 занять:"/>
+                                                    <Run Text="{Binding Price8Sessions, StringFormat='{}{0:F0}'}" FontWeight="Bold"/>
+                                                    <Run Text="грн"/>
+                                                </TextBlock>
+                                                <TextBlock FontSize="14" Foreground="#2E7D32">
+                                                    <Run Text="12 занять:"/>
+                                                    <Run Text="{Binding Price12Sessions, StringFormat='{}{0:F0}'}" FontWeight="Bold"/>
+                                                    <Run Text="грн"/>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </Border>
+                                        
+                                    </Grid>
+                                    
+                                    <Grid Grid.Row="2" ColumnDefinitions="*,*" ColumnSpacing="8">
+                                        
+                                        <Border Grid.Column="0" Background="#F3E5F5" Padding="10" CornerRadius="4">
+                                            <StackPanel Spacing="4">
+                                                <TextBlock Text="Розклад" 
+                                                          FontSize="14" 
+                                                          Foreground="#7B1FA2"
+                                                          FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding Schedule}" 
+                                                          FontSize="14" 
+                                                          Foreground="#6A1B9A"
+                                                          TextWrapping="Wrap"/>
+                                            </StackPanel>
+                                        </Border>
+                                        
+                                        <Border Grid.Column="1" Background="#F8F9FA" Padding="10" CornerRadius="4">
+                                            <StackPanel Spacing="4">
+                                                <TextBlock Text="Опис" 
+                                                          FontSize="14" 
+                                                          Foreground="#495057"
+                                                          FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding Description}" 
+                                                          FontSize="14" 
+                                                          Foreground="#212529"
+                                                          TextWrapping="Wrap"/>
+                                            </StackPanel>
+                                        </Border>
+                                        
+                                    </Grid>
+                                    
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                
+                <Border Padding="40"
+                       IsVisible="{Binding !FilteredClubs.Count}"
+                       Background="#F9F9F9"
+                       CornerRadius="6">
+                    <TextBlock Text="Клубів не знайдено"
+                              FontSize="16"
+                              Foreground="Gray"
+                              HorizontalAlignment="Center"/>
+                </Border>
+                
+            </StackPanel>
+        </ScrollViewer>
+        
+    </Grid>
+    
+</UserControl>

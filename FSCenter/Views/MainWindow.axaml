@@ -1,0 +1,193 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:FSCenter.ViewModels"
+        WindowState="Maximized"
+        Width="1024" Height="600"
+        x:Class="FSCenter.Views.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Title="FSCenter"
+        WindowStartupLocation="CenterScreen">
+    
+    <Grid Background="{DynamicResource PrimaryBackground}" 
+          RowDefinitions="Auto, *"
+          ColumnDefinitions="Auto, *">
+        
+        <!-- над меню -->
+        <Border Grid.Row="0" 
+                Grid.Column="0"
+                Background="{DynamicResource PrimaryBackGrundGradient}"
+                Padding="20,12">
+            <TextBlock Text="FSCenter"
+                      FontSize="20"
+                      FontWeight="Bold"
+                      Foreground="Yellow"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"/>
+        </Border>
+        
+        <!-- плашка -->
+        <Border Grid.Row="0" 
+                Grid.Column="1"
+                Background="{DynamicResource PrimaryBackGrundGradient}"
+                Padding="20,12">
+            <Grid ColumnDefinitions="Auto, *, Auto">
+                
+                <StackPanel Grid.Column="0" 
+                           Orientation="Horizontal" 
+                           Spacing="15"
+                           VerticalAlignment="Center">
+                    <StackPanel Spacing="2">
+                        <TextBlock Text="Адміністратор:"
+                                  FontSize="10"
+                                  Foreground="White"
+                                  Opacity="0.8"/>
+                        <TextBlock Text="{Binding AdminName}"
+                                  FontSize="14"
+                                  FontWeight="SemiBold"
+                                  Foreground="White"/>
+                    </StackPanel>
+                </StackPanel>
+                
+                <TextBlock Grid.Column="1"
+                          Text="{Binding PageTitle}"
+                          FontSize="16"
+                          FontWeight="SemiBold"
+                          Foreground="White"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
+                
+                <StackPanel Grid.Column="2" 
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Right"
+                           Spacing="2">
+                    <TextBlock Text="{Binding CurrentDateTime}"
+                              FontSize="13"
+                              Foreground="White"
+                              HorizontalAlignment="Right"
+                              FontWeight="Medium"/>
+                    <TextBlock Text="{Binding LastLogin}"
+                              FontSize="9"
+                              Foreground="White"
+                              Opacity="0.7"
+                              HorizontalAlignment="Right"/>
+                </StackPanel>
+                
+            </Grid>
+        </Border>
+        
+        <!-- бокове меню -->
+
+        <Border Grid.Row="1"
+                Grid.Column="0" 
+                Padding="20" 
+                Background="{DynamicResource PrimaryBackGrundGradient}">
+            <Grid RowDefinitions="*, Auto">
+
+                 <ScrollViewer Grid.Row="0"
+                             VerticalScrollBarVisibility="Auto"
+                             HorizontalScrollBarVisibility="Disabled">
+                
+                <StackPanel Grid.Row="0" Spacing="12">
+                    
+                    <Button HorizontalAlignment="Stretch" 
+                           Padding="12,10"
+                           Command="{Binding NavigateToMainViewCommand}">
+                        <TextBlock Text="Головне меню" FontSize="14"/>
+                    </Button>
+
+                    <TextBlock Text="КЛІЄНТИ"
+                              FontSize="11"
+                              FontWeight="SemiBold"
+                              Foreground="White"
+                              Opacity="0.6"
+                              Margin="5,10,0,5"/>
+                    
+                    <Button HorizontalAlignment="Stretch" 
+                           Padding="12,10"
+                           Command="{Binding NavigateToClientCreateCommand}">
+                        <TextBlock Text="Новий клієнт" FontSize="14"/>
+                    </Button>
+                    
+                    <Button HorizontalAlignment="Stretch" 
+                           Padding="12,10"
+                           Command="{Binding NavigateToAttendanceCommand}">
+                        <TextBlock Text="Відвідування" FontSize="14"/>
+                    </Button>
+
+                    <Button HorizontalAlignment="Stretch" 
+                           Padding="12,10"
+                           Command="{Binding NavigateToVisitsCommand}">
+                        <TextBlock Text="Список відвідувань" FontSize="14"/>
+                    </Button>
+                    
+                    <Button HorizontalAlignment="Stretch" 
+                           Padding="12,10"
+                           Command="{Binding NavigateToClientDetailsCommand}">
+                        <TextBlock Text="Інформація про клієнта" FontSize="14"/>
+                    </Button>
+                    
+                    <TextBlock Text="ФІНАНСИ"
+                              FontSize="11"
+                              FontWeight="SemiBold"
+                              Foreground="White"
+                              Opacity="0.6"
+                              Margin="5,15,0,5"/>
+                    
+                    <Button HorizontalAlignment="Stretch" 
+                           Padding="12,10"
+                           Command="{Binding NavigateToPaymentCommand}">
+                        <TextBlock Text="Оплата" FontSize="14"/>
+                    </Button>
+                    
+                    <Button HorizontalAlignment="Stretch" 
+                           Padding="12,10"
+                           Command="{Binding NavigateToPaymentsListCommand}">
+                        <TextBlock Text="Всі оплати" FontSize="14"/>
+                    </Button>
+                    
+                    <TextBlock Text="ДОДАТКОВО"
+                              FontSize="11"
+                              FontWeight="SemiBold"
+                              Foreground="White"
+                              Opacity="0.6"
+                              Margin="5,15,0,5"/>
+                    
+                    <Button HorizontalAlignment="Stretch" 
+                           Padding="12,10"
+                           Command="{Binding NavigateToClubsCommand}">
+                        <TextBlock Text="Клуби" FontSize="14"/>
+                    </Button>
+                    
+
+                    
+                    
+                    </StackPanel>
+                </ScrollViewer>
+                
+                <Button Grid.Row="1"
+                       Content="Вихід"
+                       Margin="0,10,0,0"
+                       FontSize="14"
+                       HorizontalAlignment="Stretch"
+                       Padding="12,10"
+                       Command="{Binding LogoutCommand}"/>
+                       
+            </Grid>
+        </Border>
+        
+        <!-- область контенту -->
+        <Border Grid.Row="1"
+                Grid.Column="1"
+                Margin="20"
+                Background="White"
+                CornerRadius="10"
+                Padding="20">
+            <ContentControl Content="{Binding CurrentView}"/>
+
+        </Border>
+        
+    </Grid>
+    
+</Window>

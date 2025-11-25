@@ -1,0 +1,135 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:FSCenter.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="FSCenter.Views.ClientCreateView"
+             x:DataType="vm:ClientCreateViewModel"
+             Background="White">
+    
+
+
+    <ScrollViewer>
+        <StackPanel Spacing="20" MaxWidth="600" Margin="20">
+            
+            <TextBlock Text="Новий клієнт"
+                      FontSize="28"
+                      Foreground="Black"
+                      FontWeight="Bold"/>
+            
+            <TextBlock Text="Заповніть форму для додавання нового клієнта"
+                      FontSize="14"
+                      Foreground="Gray"/>
+            
+            <!-- лінія -->
+            <Border Height="1" Background="Black" Margin="0,10"/>
+            
+            <!-- починається форма -->
+            <StackPanel Spacing="15">
+                
+                <!-- піб -->
+                <StackPanel Spacing="5">
+                    <TextBlock Text="ПІБ *" 
+                              FontWeight="SemiBold"
+                              Foreground="Black"
+                              FontSize="14"/>
+                    <TextBox Text="{Binding FullName}"
+                            Watermark="Введіть повне ім'я"
+                            FontSize="14"/>
+                </StackPanel>
+                
+                <!-- телефон -->
+                <StackPanel Spacing="5">
+                    <TextBlock Text="Телефон *" 
+                              FontWeight="SemiBold"
+                              Foreground="Black"
+                              FontSize="14"/>
+                    <TextBox Text="{Binding Phone}"
+                            Watermark="+380"
+                            FontSize="14"/>
+                </StackPanel>
+                
+                <!-- еmail -->
+                <StackPanel Spacing="5">
+                    <TextBlock Text="Email" 
+                               Foreground="Black"
+                              FontWeight="SemiBold"
+                              FontSize="14"/>
+                    <TextBox Text="{Binding Email}"
+                            Watermark="email@example.com"
+                            FontSize="14"/>
+                </StackPanel>
+                
+                <!-- вік можливо потім зроблю текстбоксом, але хай так буде поки -->
+                <StackPanel Spacing="5">
+                    <TextBlock Text="Вік" 
+                              FontWeight="SemiBold"
+                              Foreground="Black"
+                              FontSize="14"/>
+                    <NumericUpDown Value="{Binding Age}"
+                                  Minimum="0"
+                                  Maximum="120"
+                                  Increment="1"
+                                  FormatString="0"
+                                  FontSize="14"/>
+                </StackPanel>
+                
+                <!-- адреса -->
+                <StackPanel Spacing="5">
+                    <TextBlock Text="Адреса" 
+                              FontWeight="SemiBold"
+                              Foreground="Black"
+                              FontSize="14"/>
+                    <TextBox Text="{Binding Address}"
+                            Watermark="Введіть адресу"
+                            AcceptsReturn="True"
+                            Height="60"
+                            FontSize="14"/>
+                </StackPanel>
+                
+            </StackPanel>
+            
+            <!-- помилка -->
+            <TextBlock Text="{Binding ErrorMessage}"
+                      Foreground="Red"
+                      FontSize="13"
+                      TextWrapping="Wrap"
+                      IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+            
+            <!-- успіх -->
+            <TextBlock Text="{Binding SuccessMessage}"
+                      Foreground="Green"
+                      FontSize="13"
+                      TextWrapping="Wrap"
+                      IsVisible="{Binding SuccessMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+            
+            <!-- кнопки -->
+            <StackPanel Orientation="Horizontal" 
+                       Spacing="10"
+                       HorizontalAlignment="Center"
+                       Margin="0,20,0,0">
+                <Button Content="Зберегти" 
+                       Command="{Binding SaveCommand}"
+                       Padding="20,10"
+                       FontSize="14"
+                       MinWidth="100"/>
+                <Button Content="Очистити" 
+                       Command="{Binding ClearCommand}"
+                       Padding="20,10"
+                       FontSize="14"
+                       MinWidth="100"/>
+            </StackPanel>
+            
+            <!-- може приберу, але не знаю як інакше виділити зірки -->
+            <TextBlock Text="* - обов'язкові поля"
+                      FontSize="12"
+                      Foreground="Gray"
+                      FontStyle="Italic"
+                      HorizontalAlignment="Center"
+                      Margin="0,10,0,0"/>
+            
+        </StackPanel>
+    </ScrollViewer>
+    
+</UserControl>

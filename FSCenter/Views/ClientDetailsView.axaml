@@ -1,0 +1,382 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:FSCenter.ViewModels"
+             x:Class="FSCenter.Views.ClientDetailsView"
+             x:DataType="vm:ClientDetailsViewModel"
+             Background="White">
+    
+    <ScrollViewer>
+        <StackPanel Margin="20" Spacing="20">
+            
+            <TextBlock Text="Інформація про клієнта"
+                      FontSize="24"
+                      Foreground="Black"
+                      FontWeight="Bold"/>
+            
+            <!-- пошук -->
+            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                <TextBox Grid.Column="0"
+                        Text="{Binding SearchQuery}"
+                        Watermark="Введіть ID або прізвище клієнта..."
+                        FontSize="14"
+                        Height="35">
+                    <TextBox.KeyBindings>
+                        <KeyBinding Gesture="Enter" Command="{Binding SearchCommand}" />
+                    </TextBox.KeyBindings>
+                </TextBox>
+                <Button Grid.Column="1"
+                       Content="Пошук"
+                       Command="{Binding SearchCommand}"
+                       Padding="20,8"/>
+                <Button Grid.Column="2"
+                       Content="Очистити"
+                       Command="{Binding ClearCommand}"
+                       Padding="15,8"/>
+            </Grid>
+            
+            <!-- cтатус -->
+            <Border Background="#F5F5F5"
+                   CornerRadius="5"
+                   Padding="12">
+                <TextBlock Text="{Binding StatusMessage}"
+                          FontSize="14"
+                          Foreground="Gray"
+                          TextAlignment="Center"/>
+            </Border>
+            
+            <!-- дані -->
+            <StackPanel Spacing="20" IsVisible="{Binding HasClientData}">
+                
+                <!-- основна інформація -->
+                <Border BorderBrush="#CCCCCC"
+                       BorderThickness="1"
+                       CornerRadius="8"
+                       Padding="20">
+                    <StackPanel Spacing="15">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <TextBlock Grid.Column="0"
+                                      Text="Основна інформація"
+                                      FontSize="18"
+                                      FontWeight="Bold"
+                                      Foreground="Black"/>
+                            <Border Grid.Column="1"
+                                   Background="#E3F2FD"
+                                   CornerRadius="15"
+                                   Padding="10,5">
+                                <StackPanel Orientation="Horizontal" Spacing="5">
+                                    <TextBlock Text="ID:"
+                                              FontSize="12"
+                                              Foreground="#1976D2"/>
+                                    <TextBlock Text="{Binding ClientId}"
+                                              FontSize="12"
+                                              Foreground="#1976D2"
+                                              FontWeight="Bold"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                        
+                        <Separator/>
+                        
+                        <Grid ColumnDefinitions="150,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="10">
+                            <!-- ПІБ -->
+                            <TextBlock Grid.Row="0" Grid.Column="0"
+                                      Text="ПІБ:"
+                                      FontSize="14"
+                                      Foreground="#666"
+                                      VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1"
+                                      Text="{Binding FullName}"
+                                      FontSize="14"
+                                      FontWeight="SemiBold"
+                                      Foreground="Black"
+                                      VerticalAlignment="Center"/>
+                            
+                            <!-- телефон -->
+                            <TextBlock Grid.Row="1" Grid.Column="0"
+                                      Text="Телефон:"
+                                      FontSize="14"
+                                      Foreground="#666"
+                                      VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1"
+                                      Text="{Binding Phone}"
+                                      FontSize="14"
+                                      Foreground="Black"
+                                      VerticalAlignment="Center"/>
+                            
+                            <!-- еmail -->
+                            <TextBlock Grid.Row="2" Grid.Column="0"
+                                      Text="Email:"
+                                      FontSize="14"
+                                      Foreground="#666"
+                                      VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1"
+                                      Text="{Binding Email}"
+                                      FontSize="14"
+                                      Foreground="Black"
+                                      VerticalAlignment="Center"/>
+                            
+                            <!-- вік -->
+                            <TextBlock Grid.Row="3" Grid.Column="0"
+                                      Text="Вік:"
+                                      FontSize="14"
+                                      Foreground="#666"
+                                      VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1"
+                                      Text="{Binding Age}"
+                                      FontSize="14"
+                                      Foreground="Black"
+                                      VerticalAlignment="Center"/>
+                            
+                            <!-- адреса -->
+                            <TextBlock Grid.Row="4" Grid.Column="0"
+                                      Text="Адреса:"
+                                      FontSize="14"
+                                      Foreground="#666"
+                                      VerticalAlignment="Top"
+                                      Margin="0,3,0,0"/>
+                            <TextBlock Grid.Row="4" Grid.Column="1"
+                                      Text="{Binding Address}"
+                                      FontSize="14"
+                                      Foreground="Black"
+                                      TextWrapping="Wrap"/>
+                            
+                            <!-- зареєстрований -->
+                            <TextBlock Grid.Row="5" Grid.Column="0"
+                                      Text="Зареєстрований:"
+                                      FontSize="14"
+                                      Foreground="#666"
+                                      VerticalAlignment="Center"/>
+                            <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" Spacing="10">
+                                <TextBlock Text="{Binding RegisteredAt}"
+                                          FontSize="14"
+                                          Foreground="Black"
+                                          VerticalAlignment="Center"/>
+                                <Border Background="#E8F5E9"
+                                       CornerRadius="3"
+                                       Padding="6,2">
+                                    <TextBlock Text="{Binding IsActiveText}"
+                                              FontSize="11"
+                                              Foreground="#2E7D32"
+                                              FontWeight="SemiBold"/>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                
+                <!-- статистика -->
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                    <!-- абонементи -->
+                    <Border Grid.Column="0"
+                           Background="#E3F2FD"
+                           CornerRadius="8"
+                           Padding="15">
+                        <StackPanel Spacing="5">
+                            <TextBlock Text="Абонементи"
+                                      FontSize="12"
+                                      Foreground="#1976D2"
+                                      FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding TotalMemberships}"
+                                      FontSize="28"
+                                      Foreground="#1976D2"
+                                      FontWeight="Bold"
+                                      HorizontalAlignment="Center"/>
+                            <TextBlock FontSize="11" Foreground="#1976D2" HorizontalAlignment="Center">
+                                <Run Text="Активних:"/>
+                                <Run Text="{Binding ActiveMemberships}" FontWeight="Bold"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+                    
+                    <!-- відвідування -->
+                    <Border Grid.Column="1"
+                           Background="#E8F5E9"
+                           CornerRadius="8"
+                           Padding="15">
+                        <StackPanel Spacing="5">
+                            <TextBlock Text="Відвідувань"
+                                      FontSize="12"
+                                      Foreground="#2E7D32"
+                                      FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding TotalVisits}"
+                                      FontSize="28"
+                                      Foreground="#2E7D32"
+                                      FontWeight="Bold"
+                                      HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding LastVisitDate, StringFormat='Останнє: {0}'}"
+                                      FontSize="10"
+                                      Foreground="#2E7D32"
+                                      HorizontalAlignment="Center"
+                                      TextWrapping="Wrap"
+                                      TextAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                    
+                    <!-- платежі -->
+                    <Border Grid.Column="2"
+                           Background="#FFF3E0"
+                           CornerRadius="8"
+                           Padding="15">
+                        <StackPanel Spacing="5">
+                            <TextBlock Text="Оплачено"
+                                      FontSize="12"
+                                      Foreground="#E65100"
+                                      FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding TotalPaid, StringFormat='{}{0:F2} грн'}"
+                                      FontSize="24"
+                                      Foreground="#E65100"
+                                      FontWeight="Bold"
+                                      HorizontalAlignment="Center"/>
+                            <TextBlock FontSize="11" Foreground="#E65100" HorizontalAlignment="Center">
+                                <Run Text="Платежів:"/>
+                                <Run Text="{Binding TotalPayments}" FontWeight="Bold"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+                
+                <!-- абонементи -->
+                <Border BorderBrush="#CCCCCC"
+                       BorderThickness="1"
+                       CornerRadius="8"
+                       Padding="20">
+                    <StackPanel Spacing="15">
+                        <TextBlock Text="Абонементи"
+                                  FontSize="18"
+                                  FontWeight="Bold"
+                                  Foreground="Black"/>
+                        
+                        <Separator/>
+                        
+                        <ItemsControl ItemsSource="{Binding Memberships}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="#EEE"
+                                           BorderThickness="0,0,0,1"
+                                           Padding="10"
+                                           Margin="0,0,0,10">
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="{Binding ClubName}"
+                                                          FontSize="15"
+                                                          FontWeight="SemiBold"
+                                                          Foreground="Black"/>
+                                                <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,5,0,0">
+                                                    <TextBlock FontSize="12" Foreground="#666">
+                                                        <Run Text="{Binding StartDate}"/>
+                                                        <Run Text="->"/>
+                                                        <Run Text="{Binding ExpiryDate}"/>
+                                                    </TextBlock>
+                                                    <TextBlock FontSize="12" Foreground="#666">
+                                                        <Run Text="{Binding VisitsCount}"/>
+                                                        <Run Text="відвідувань"/>
+                                                    </TextBlock>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            
+                                            <StackPanel Grid.Column="1" Margin="10,0">
+                                                <TextBlock Text="Залишилось"
+                                                          FontSize="10"
+                                                          Foreground="Gray"
+                                                          HorizontalAlignment="Center"/>
+                                                <TextBlock Text="{Binding SessionsInfo}"
+                                                          FontSize="16"
+                                                          FontWeight="Bold"
+                                                          Foreground="#1976D2"
+                                                          HorizontalAlignment="Center"/>
+                                            </StackPanel>
+                                            
+                                            
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        
+                        <TextBlock Text="Немає абонементів"
+                                  FontSize="14"
+                                  Foreground="Gray"
+                                  HorizontalAlignment="Center"
+                                  Margin="20"
+                                  IsVisible="{Binding !Memberships.Count}"/>
+                    </StackPanel>
+                </Border>
+                
+                <!-- платежі -->
+                <Border BorderBrush="#CCCCCC"
+                       BorderThickness="1"
+                       CornerRadius="8"
+                       Padding="20">
+                    <StackPanel Spacing="15">
+                        <TextBlock Text="Історія платежів"
+                                  FontSize="18"
+                                  FontWeight="Bold"
+                                  Foreground="Black"/>
+                        
+                        <Separator/>
+                        
+                        <ScrollViewer MaxHeight="300">
+                            <ItemsControl ItemsSource="{Binding Payments}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="#EEE"
+                                               BorderThickness="0,0,0,1"
+                                               Padding="10"
+                                               Margin="0,0,0,5">
+                                            <Grid ColumnDefinitions="Auto,*,Auto">
+                                                <TextBlock Grid.Column="0"
+                                                          Text="{Binding PaymentDate}"
+                                                          FontSize="12"
+                                                          Foreground="#666"
+                                                          VerticalAlignment="Center"
+                                                          Margin="0,0,15,0"/>
+                                                
+                                                <StackPanel Grid.Column="1">
+                                                    <TextBlock Text="{Binding Description}"
+                                                              FontSize="13"
+                                                              Foreground="Black"/>
+                                                    <TextBlock Text="{Binding PaymentMethod}"
+                                                              FontSize="11"
+                                                              Foreground="Gray"/>
+                                                </StackPanel>
+                                                
+                                                <TextBlock Grid.Column="2"
+                                                          Text="{Binding AmountFormatted}"
+                                                          FontSize="14"
+                                                          FontWeight="Bold"
+                                                          Foreground="#2E7D32"
+                                                          VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                        
+                        <TextBlock Text="Немає платежів"
+                                  FontSize="14"
+                                  Foreground="Gray"
+                                  HorizontalAlignment="Center"
+                                  Margin="20"
+                                  IsVisible="{Binding !Payments.Count}"/>
+                    </StackPanel>
+                </Border>
+                
+            </StackPanel>
+            
+            <Border Background="#F9F9F9"
+                   CornerRadius="5"
+                   Padding="30"
+                   IsVisible="{Binding !HasClientData}">
+                <StackPanel Spacing="10" HorizontalAlignment="Center">
+                    <TextBlock Text="Введіть ID або прізвище для пошуку"
+                              FontSize="16"
+                              Foreground="Gray"
+                              HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+            
+        </StackPanel>
+    </ScrollViewer>
+    
+</UserControl>

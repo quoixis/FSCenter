@@ -1,0 +1,84 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:FSCenter.ViewModels"
+        x:Class="FSCenter.Views.LoginWindow"
+        x:DataType="vm:LoginViewModel"
+        Title="Вхід в систему"
+        Width="450"
+        Height="400"
+        WindowStartupLocation="CenterScreen"
+        CanResize="False"
+        Background="White">
+    
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        
+        <Border Background="White"
+               Padding="40"
+               Width="400">
+            
+            <StackPanel Spacing="20">
+                
+                <TextBlock Text="Вхід в систему"
+                          FontSize="24"
+                          FontWeight="Bold"
+                          Foreground="Black"
+                          HorizontalAlignment="Center"/>
+
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Логін" FontSize="13" FontWeight="SemiBold" Foreground="Black"/>
+                    <TextBox Text="{Binding Username}"
+                            Watermark="Введіть логін"
+                            FontSize="14"
+                            Height="32">
+                        <TextBox.KeyBindings>
+                            <KeyBinding Gesture="Enter" Command="{Binding LoginCommand}" />
+                        </TextBox.KeyBindings>
+                    </TextBox>
+                </StackPanel>
+
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Пароль" FontSize="13" FontWeight="SemiBold" Foreground="Black"/>
+                    <TextBox Text="{Binding Password}"
+                            Watermark="Введіть пароль"
+                            PasswordChar="Х"
+                            FontSize="14"
+                            Height="32">
+                        <TextBox.KeyBindings>
+                            <KeyBinding Gesture="Enter" Command="{Binding LoginCommand}" />
+                        </TextBox.KeyBindings>
+                    </TextBox>
+                </StackPanel>
+
+                <TextBlock Text="{Binding ErrorMessage}"
+                          Foreground="Red"
+                          FontSize="13"
+                          TextWrapping="Wrap"
+                          HorizontalAlignment="Center"
+                          IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+               <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+
+                <Button Content="Увійти"
+                        FontSize="14"
+                        HorizontalContentAlignment="Center"
+                        Command="{Binding LoginCommand}"
+                        Height="30"
+                        Width="120"/>
+
+                <Button Content="Закрити"
+                        FontSize="14"
+                        HorizontalContentAlignment="Center"
+                        Command="{Binding ExitCommand}"
+                        Height="30"
+                        Width="120"/>
+
+            </StackPanel>
+
+
+            </StackPanel>
+            
+        </Border>
+        
+    </Grid>
+    
+</Window>

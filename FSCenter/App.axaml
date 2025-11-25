@@ -1,0 +1,60 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:FSCenter.ViewModels"
+             xmlns:views="clr-namespace:FSCenter.Views"
+             x:Class="FSCenter.App"
+             RequestedThemeVariant="Light">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+    <Application.Styles>
+        <FluentTheme />
+        <StyleInclude Source="Styles/AppDefaultStyles.axaml"></StyleInclude>
+    </Application.Styles>
+    <Application.Resources>
+        <SolidColorBrush x:Key="PrimaryForeground">#CFCFCF</SolidColorBrush>
+        <SolidColorBrush x:Key="PrimaryBackground">#14172D</SolidColorBrush>
+        <LinearGradientBrush x:Key="PrimaryBackGrundGradient" StartPoint="0%,0%" EndPoint="100%, 0%">
+            <GradientStop Offset="0" Color="#111214"></GradientStop>
+            <GradientStop Offset="1" Color="#151E3E"></GradientStop>
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="PrimaryHoverBackground">#333B5A</SolidColorBrush>
+        <SolidColorBrush x:Key="PrimaryHoverForeground">White</SolidColorBrush>
+        
+    </Application.Resources>
+    <Application.DataTemplates>
+        
+        <DataTemplate DataType="vm:ClientCreateViewModel">
+            <views:ClientCreateView />
+        </DataTemplate>
+
+        <DataTemplate DataType="vm:AttendanceViewModel">
+            <views:AttendanceView />
+        </DataTemplate>
+
+        <DataTemplate DataType="vm:VisitsListViewModel">
+            <views:VisitsListView />
+        </DataTemplate>
+
+        <DataTemplate DataType="vm:ClientDetailsViewModel">
+            <views:ClientDetailsView />
+        </DataTemplate>
+
+        <DataTemplate DataType="vm:PaymentViewModel">
+            <views:PaymentView />
+        </DataTemplate>
+
+        <DataTemplate DataType="vm:PaymentsListViewModel">
+            <views:PaymentsListView />
+        </DataTemplate>
+
+        <DataTemplate DataType="vm:ClubsViewModel">
+            <views:ClubsView />
+        </DataTemplate>
+
+        <DataTemplate DataType="vm:MainPageViewModel">
+            <views:MainPageView />
+        </DataTemplate>
+
+
+        
+    </Application.DataTemplates>
+</Application>

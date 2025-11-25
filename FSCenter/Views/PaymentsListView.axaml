@@ -1,0 +1,192 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:FSCenter.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="700"
+             x:Class="FSCenter.Views.PaymentsListView"
+             x:DataType="vm:PaymentsListViewModel"
+             Background="White">
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*" Margin="20">
+        
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,15">
+            <TextBlock Grid.Column="0"
+                      Text="Всі оплати"
+                      FontSize="28"
+                      Foreground="Black"
+                      FontWeight="Bold"
+                      VerticalAlignment="Center"/>
+            
+        </Grid>
+
+        <Border Grid.Row="1" 
+                Background="#F8F9FA"
+                Padding="15"
+                CornerRadius="8"
+                BorderBrush="#DEE2E6"
+                BorderThickness="1"
+                Margin="0,0,0,15">
+            
+            <Grid ColumnDefinitions="2*,*,Auto,Auto">
+                
+                <StackPanel Grid.Column="0" Spacing="5" Margin="0,0,10,0">
+                    <TextBlock Text="Пошук" FontSize="12" FontWeight="SemiBold" Foreground="#495057"/>
+                    <TextBox Text="{Binding SearchText}"
+                            Watermark="ID, iм'я, телефон, опис..."
+                            FontSize="13"
+                            Height="32"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Spacing="5" Margin="0,0,10,0">
+                    <TextBlock Text="Метод оплати" FontSize="12" FontWeight="SemiBold" Foreground="#495057"/>
+                    <ComboBox ItemsSource="{Binding FilterOptions}"
+                             SelectedItem="{Binding SelectedFilter}"
+                             HorizontalAlignment="Stretch"
+                             FontSize="13"
+                             Height="32"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Spacing="5" Margin="0,0,10,0">
+                    <TextBlock Text="Дата" FontSize="12" FontWeight="SemiBold" Foreground="#495057"/>
+                    <CalendarDatePicker SelectedDate="{Binding SelectedDate}"
+                                       HorizontalAlignment="Stretch"
+                                       Height="32"
+                                       Width="150"/>
+                </StackPanel>
+
+                <Button Grid.Column="3"
+                       Content="Очистити"
+                       Command="{Binding ClearFiltersCommand}"
+                       Padding="12,8"
+                       FontSize="12"
+                       VerticalAlignment="Bottom"
+                       Height="32"/>
+                
+            </Grid>
+            
+        </Border>
+
+        <Border Grid.Row="2"
+                Background="#E3F2FD"
+                Padding="15"
+                CornerRadius="8"
+                BorderBrush="#2196F3"
+                BorderThickness="2"
+                Margin="0,0,0,15">
+            
+            <StackPanel Orientation="Horizontal" Spacing="30">
+                <StackPanel Spacing="3">
+                    <TextBlock Text="Кількість платежів:" 
+                              FontSize="12" 
+                              Foreground="#1565C0"
+                              FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding PaymentsCount}" 
+                              FontSize="20" 
+                              FontWeight="Bold"
+                              Foreground="#0D47A1"/>
+                </StackPanel>
+                
+                <Border Width="1" Background="#90CAF9"/>
+                
+                <StackPanel Spacing="3">
+                    <TextBlock Text="Загальна сума:" 
+                              FontSize="12" 
+                              Foreground="#1565C0"
+                              FontWeight="SemiBold"/>
+                    <TextBlock FontSize="20" 
+                              FontWeight="Bold"
+                              Foreground="#0D47A1">
+                        <Run Text="{Binding TotalAmount, StringFormat='{}{0:F2}'}"/>
+                        <Run Text=" грн"/>
+                    </TextBlock>
+                </StackPanel>
+            </StackPanel>
+            
+        </Border>
+
+        <ScrollViewer Grid.Row="3">
+            <StackPanel Spacing="5">
+                
+                <TextBlock Text="{Binding ErrorMessage}"
+                          Foreground="Red"
+                          FontSize="13"
+                          TextWrapping="Wrap"
+                          Margin="0,0,0,10"
+                          IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                
+                <ItemsControl ItemsSource="{Binding FilteredPayments}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="15"
+                                   Margin="0,0,0,10"
+                                   Background="#FFFFFF"
+                                   CornerRadius="8"
+                                   BorderBrush="#DEE2E6"
+                                   BorderThickness="1">
+                                
+                                <Grid ColumnDefinitions="*,Auto,Auto">
+                                    
+                                    <StackPanel Grid.Column="0" Spacing="6" VerticalAlignment="Center">
+                                        <TextBlock FontSize="16" FontWeight="SemiBold" Foreground="#212529">
+                                            <Run Text="{Binding Client.FullName}"/>
+                                        </TextBlock>
+                                        <TextBlock FontSize="13" Foreground="#6C757D">
+                                            <Run Text="{Binding Description}"/>
+                                        </TextBlock>
+                                        <StackPanel Orientation="Horizontal" Spacing="15">
+                                            <TextBlock FontSize="12" Foreground="#ADB5BD">
+                                                <Run Text="Телефон:"/>
+                                                <Run Text="{Binding Client.Phone}"/>
+                                            </TextBlock>
+                                            <TextBlock FontSize="12" Foreground="#ADB5BD">
+                                                <Run Text="Метод:"/>
+                                                <Run Text="{Binding PaymentMethod}"/>
+                                            </TextBlock>
+                                            <TextBlock FontSize="12" Foreground="#ADB5BD">
+                                                <Run Text="Дата:"/>
+                                                <Run Text="{Binding PaymentDate}"/>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    
+                                    <StackPanel Grid.Column="1" 
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,20,0">
+                                        <TextBlock Text="ID" 
+                                                  FontSize="10" 
+                                                  Foreground="#ADB5BD"
+                                                  HorizontalAlignment="Center"/>
+                                        <TextBlock Text="{Binding ClientId}" 
+                                                  FontSize="14" 
+                                                  FontWeight="SemiBold"
+                                                  Foreground="#495057"
+                                                  HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                    
+                                    <Border Grid.Column="2"
+                                           Background="#E8F5E9"
+                                           Padding="15,10"
+                                           CornerRadius="6"
+                                           VerticalAlignment="Center">
+                                        <TextBlock FontSize="20"
+                                                  FontWeight="Bold"
+                                                  Foreground="#2E7D32"
+                                                  TextAlignment="Right">
+                                            <Run Text="{Binding Amount, StringFormat='{}{0:F2}'}"/>
+                                            <Run Text=" грн" FontSize="13"/>
+                                        </TextBlock>
+                                    </Border>
+                                    
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                
+            </StackPanel>
+        </ScrollViewer>
+        
+    </Grid>
+    
+</UserControl>

@@ -1,0 +1,111 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:FSCenter.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="700"
+             x:Class="FSCenter.Views.MainPageView"
+             x:DataType="vm:MainPageViewModel"
+             Background="White">
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*" Margin="40">
+        
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,40">
+            <StackPanel Grid.Column="0" Spacing="10">
+                <TextBlock Text="Час працювати"
+                          FontSize="36"
+                          Foreground="Black"
+                          FontWeight="Bold"/>
+                <TextBlock Text="{Binding CurrentDate}"
+                          FontSize="16"
+                          Foreground="Gray"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- cтатистика за сьогодні -->
+        <TextBlock Grid.Row="1"
+                  Text="Статистика за сьогодні"
+                  FontSize="24"
+                  Foreground="Black"
+                  FontWeight="SemiBold"
+                  Margin="0,0,0,20"/>
+
+        <Grid Grid.Row="2" ColumnDefinitions="*,*,*,*" ColumnSpacing="25">
+            
+            <!-- відвідувань -->
+            <Border Grid.Column="0" Background="#E3F2FD" Padding="30" CornerRadius="15">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Відвідувань сьогодні" 
+                              FontSize="15" 
+                              Foreground="#1976D2" 
+                              FontWeight="SemiBold"
+                              TextWrapping="Wrap"/>
+                    <TextBlock Text="{Binding VisitsToday}" 
+                              FontSize="52" 
+                              FontWeight="Bold" 
+                              Foreground="#0D47A1"/>
+                </StackPanel>
+            </Border>
+
+            <!-- оплат -->
+            <Border Grid.Column="1" Background="#E8F5E9" Padding="30" CornerRadius="15">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Оплачено сьогодні" 
+                              FontSize="15" 
+                              Foreground="#388E3C" 
+                              FontWeight="SemiBold"
+                              TextWrapping="Wrap"/>
+                    <TextBlock FontSize="52" 
+                              FontWeight="Bold" 
+                              Foreground="#2E7D32">
+                        <Run Text="{Binding PaymentsToday, StringFormat='{}{0:F0}'}"/>
+                        <Run Text="₴" FontSize="32"/>
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+            <!-- абонементів -->
+            <Border Grid.Column="2" Background="#FFF3E0" Padding="30" CornerRadius="15">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Активних абонементів" 
+                              FontSize="15" 
+                              Foreground="#E65100" 
+                              FontWeight="SemiBold"
+                              TextWrapping="Wrap"/>
+                    <TextBlock Text="{Binding ActiveMemberships}" 
+                              FontSize="52" 
+                              FontWeight="Bold" 
+                              Foreground="#BF360C"/>
+                </StackPanel>
+            </Border>
+
+            <!-- клієнтів -->
+            <Border Grid.Column="3" Background="#F3E5F5" Padding="30" CornerRadius="15">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Всього клієнтів" 
+                              FontSize="15" 
+                              Foreground="#7B1FA2" 
+                              FontWeight="SemiBold"
+                              TextWrapping="Wrap"/>
+                    <TextBlock Text="{Binding TotalClients}" 
+                              FontSize="52" 
+                              FontWeight="Bold" 
+                              Foreground="#6A1B9A"/>
+                </StackPanel>
+            </Border>
+            
+        </Grid>
+
+        <!-- помилка -->
+        <TextBlock Grid.Row="3"
+                  Text="{Binding ErrorMessage}"
+                  Foreground="Red"
+                  FontSize="14"
+                  TextWrapping="Wrap"
+                  Margin="0,20,0,0"
+                  VerticalAlignment="Top"
+                  IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+        
+    </Grid>
+    
+</UserControl>

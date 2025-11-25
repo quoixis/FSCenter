@@ -1,0 +1,76 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:FSCenter.ViewModels"
+             x:Class="FSCenter.Views.VisitsListView"
+             x:DataType="vm:VisitsListViewModel"
+
+             Background="White">
+    
+    <StackPanel Margin="20" Spacing="20">
+        
+        <Grid ColumnDefinitions="*,Auto">
+            <TextBlock Text="Список відвідувань" FontSize="24" FontWeight="Bold" Foreground="Black"/>
+            <Border Grid.Column="1" Background="#E3F2FD" CornerRadius="8" Padding="10,5">
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                    <TextBlock Text="Сьогодні:" FontSize="13" Foreground="#1976D2"/>
+                    <TextBlock Text="{Binding TotalVisits}" FontSize="13" Foreground="#1976D2" FontWeight="Bold"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+        
+        <StackPanel Orientation="Horizontal" Spacing="10">
+            <TextBlock Text="Дата:" FontSize="14" VerticalAlignment="Center" Foreground="Black"/>
+            <CalendarDatePicker SelectedDate="{Binding SelectedDate}" Width="150"/>
+        </StackPanel>
+        
+        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+            <TextBox Grid.Column="0"
+                    Text="{Binding SearchQuery}"
+                    Height="35"
+                    Watermark="Пошук за ім'ям або клубом"
+                    FontSize="14">
+                <TextBox.KeyBindings>
+                    <KeyBinding Gesture="Enter" Command="{Binding SearchCommand}"/>
+                </TextBox.KeyBindings>
+            </TextBox>
+            <Button Grid.Column="1" Content="Пошук" Command="{Binding SearchCommand}" Padding="20,8"/>
+            <Button Grid.Column="2" Content="Очистити" Command="{Binding ClearCommand}" Padding="15,8"/>
+        </Grid>
+        
+        <Border BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="5">
+            <ScrollViewer>
+                <StackPanel>
+                    <Border Background="#F5F5F5" BorderBrush="#DDDDDD" BorderThickness="0,0,0,1" Padding="15,10">
+                        <Grid ColumnDefinitions="100,150,*,250">
+                            <TextBlock Grid.Column="0" Text="Час" FontSize="13" FontWeight="Bold" Foreground="#666"/>
+                            <TextBlock Grid.Column="1" Text="Клуб" FontSize="13" FontWeight="Bold" Foreground="#666"/>
+                            <TextBlock Grid.Column="2" Text="Клієнт" FontSize="13" FontWeight="Bold" Foreground="#666"/>
+                            <TextBlock Grid.Column="3" Text="Коментар" FontSize="13" FontWeight="Bold" Foreground="#666"/>
+                        </Grid>
+                    </Border>
+                    
+                    <ItemsControl ItemsSource="{Binding Visits}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="#EEEEEE" BorderThickness="0,0,0,1" Padding="15,10">
+                                    <Grid ColumnDefinitions="100,150,*,250">
+                                        <TextBlock Grid.Column="0" Text="{Binding TimeFormatted}" FontSize="13" FontWeight="SemiBold" Foreground="#1976D2" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding ClubName}" FontSize="12" Foreground="#E65100" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding ClientName}" FontSize="13" Foreground="Black" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="3" Text="{Binding Notes}" FontSize="12" Foreground="#666" FontStyle="Italic" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    
+                    <Border Padding="30" IsVisible="{Binding !Visits.Count}">
+                        <TextBlock Text="Немає відвідувань на цю дату" FontSize="16" Foreground="Gray" HorizontalAlignment="Center"/>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+        
+    </StackPanel>
+    
+</UserControl>

@@ -1,0 +1,445 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:FSCenter.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="700"
+             x:Class="FSCenter.Views.PaymentView"
+             x:DataType="vm:PaymentViewModel"
+             Background="White">
+
+    <Grid RowDefinitions="Auto,*" Margin="20">
+        
+        <TextBlock Grid.Row="0"
+                  Text="Оплата"
+                  FontSize="28"
+                  Foreground="Black"
+                  FontWeight="Bold"
+                  Margin="0,0,0,15"/>
+        
+        <TabControl Grid.Row="1" 
+                   SelectedIndex="{Binding SelectedTabIndex}">
+            
+            <!-- 1 вкладка -->
+            <TabItem Header="Новий абонемент" FontSize="14">
+                <ScrollViewer>
+                    <StackPanel Spacing="20" MaxWidth="600" Margin="20">
+                        
+                        <TextBlock Text="Створення абонемента для клієнта"
+                                  FontSize="14"
+                                  Foreground="Gray"/>
+                        
+                        <Border Height="1" Background="Black"/>
+                        
+                        <StackPanel Spacing="15">
+                            
+                            <StackPanel Spacing="5">
+                                <TextBlock Text="ID клієнта *" 
+                                          FontWeight="SemiBold"
+                                          Foreground="Black"
+                                          FontSize="14"/>
+                                <NumericUpDown Value="{Binding ClientId}"
+                                              Minimum="0"
+                                              Maximum="999999"
+                                              Increment="1"
+                                              FormatString="0"
+                                              FontSize="14"
+                                              HorizontalAlignment="Stretch"/>
+                            </StackPanel>
+                            
+                            <StackPanel Spacing="5" 
+                                       IsVisible="{Binding ClientInfo, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                <TextBlock Text="Клієнт:" 
+                                          FontWeight="SemiBold"
+                                          Foreground="Black"
+                                          FontSize="14"/>
+                                <Border Background="#F0F0F0" 
+                                       Padding="10" 
+                                       CornerRadius="5">
+                                    <TextBlock Text="{Binding ClientInfo}"
+                                              FontSize="14"
+                                              Foreground="#333"/>
+                                </Border>
+                            </StackPanel>
+                            
+                            <StackPanel Spacing="5">
+                                <TextBlock Text="Секція *" 
+                                          FontWeight="SemiBold"
+                                          Foreground="Black"
+                                          FontSize="14"/>
+                                <ComboBox ItemsSource="{Binding Clubs}"
+                                         SelectedItem="{Binding SelectedClub}"
+                                         HorizontalAlignment="Stretch"
+                                         FontSize="14">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                            
+                            <StackPanel Spacing="5">
+                                <TextBlock Text="Кількість занять *" 
+                                          FontWeight="SemiBold"
+                                          Foreground="Black"
+                                          FontSize="14"/>
+                                <ComboBox ItemsSource="{Binding SessionsOptions}"
+                                         SelectedItem="{Binding SessionsCount}"
+                                         HorizontalAlignment="Stretch"
+                                         FontSize="14"/>
+                            </StackPanel>
+                            
+                            <StackPanel Spacing="5">
+                                <TextBlock Text="Ціна" 
+                                          FontWeight="SemiBold"
+                                          Foreground="Black"
+                                          FontSize="14"/>
+                                <Border Background="#E8F5E9" 
+                                       Padding="12" 
+                                       CornerRadius="5"
+                                       BorderBrush="#4CAF50"
+                                       BorderThickness="2">
+                                    <TextBlock FontSize="20"
+                                              FontWeight="Bold"
+                                              Foreground="#2E7D32"
+                                              HorizontalAlignment="Center">
+                                        <Run Text="{Binding Price, StringFormat='{}{0:F2}'}"/>
+                                        <Run Text=" грн"/>
+                                    </TextBlock>
+                                </Border>
+                            </StackPanel>
+                            
+                            <StackPanel Spacing="5">
+                                <TextBlock Text="Метод оплати *" 
+                                          FontWeight="SemiBold"
+                                          Foreground="Black"
+                                          FontSize="14"/>
+                                <ComboBox ItemsSource="{Binding PaymentMethods}"
+                                         SelectedItem="{Binding PaymentMethod}"
+                                         HorizontalAlignment="Stretch"
+                                         FontSize="14"/>
+                            </StackPanel>
+                            
+                        </StackPanel>
+                        
+                        <TextBlock Text="{Binding ErrorMessage}"
+                                  Foreground="Red"
+                                  FontSize="13"
+                                  TextWrapping="Wrap"
+                                  IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                        
+                        <TextBlock Text="{Binding SuccessMessage}"
+                                  Foreground="Green"
+                                  FontSize="13"
+                                  TextWrapping="Wrap"
+                                  IsVisible="{Binding SuccessMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                        
+                        <StackPanel Orientation="Horizontal" 
+                                   Spacing="10"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,20,0,0">
+                            <Button Content="Створити абонемент" 
+                                   Command="{Binding SaveCommand}"
+                                   Padding="20,10"
+                                   FontSize="14"
+                                   MinWidth="150"/>
+                            <Button Content="Очистити" 
+                                   Command="{Binding ClearCommand}"
+                                   Padding="20,10"
+                                   FontSize="14"
+                                   MinWidth="100"/>
+                        </StackPanel>
+                        
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+            
+            <!-- 2 вкладка -->
+            <TabItem Header="Заморозка абонемента" FontSize="14">
+                <ScrollViewer>
+                    <StackPanel Spacing="20" MaxWidth="600" Margin="20">
+                        
+                        <TextBlock Text="Продовження терміну дії активного абонемента"
+                                  FontSize="14"
+                                  Foreground="Gray"/>
+                        
+                        <Border Height="1" Background="Black"/>
+                        
+                        <StackPanel Spacing="15">
+                            
+                            <StackPanel Spacing="5">
+                                <TextBlock Text="ID клієнта *" 
+                                          FontWeight="SemiBold"
+                                          Foreground="Black"
+                                          FontSize="14"/>
+                                <NumericUpDown Value="{Binding FreezeClientId}"
+                                              Minimum="0"
+                                              Maximum="999999"
+                                              Increment="1"
+                                              FormatString="0"
+                                              FontSize="14"
+                                              HorizontalAlignment="Stretch"/>
+                            </StackPanel>
+                            
+                            <StackPanel Spacing="5" 
+                                       IsVisible="{Binding FreezeClientInfo, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                <TextBlock Text="Клієнт:" 
+                                          FontWeight="SemiBold"
+                                          Foreground="Black"
+                                          FontSize="14"/>
+                                <Border Background="#F0F0F0" 
+                                       Padding="10" 
+                                       CornerRadius="5">
+                                    <TextBlock Text="{Binding FreezeClientInfo}"
+                                              FontSize="14"
+                                              Foreground="#333"/>
+                                </Border>
+                            </StackPanel>
+                            
+                            <StackPanel Spacing="5"
+                                       IsVisible="{Binding ActiveMemberships.Count}">
+                                <TextBlock Text="Активні абонементи *" 
+                                          FontWeight="SemiBold"
+                                          Foreground="Black"
+                                          FontSize="14"/>
+                                <ListBox ItemsSource="{Binding ActiveMemberships}"
+                                        SelectedItem="{Binding SelectedMembership}"
+                                        MaxHeight="150"
+                                        Background="White"
+                                        BorderBrush="#CCC"
+                                        BorderThickness="1"
+                                        CornerRadius="5">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Spacing="3">
+                                                <TextBlock FontSize="14" FontWeight="SemiBold">
+                                                    <Run Text="{Binding Club.Name}"/>
+                                                </TextBlock>
+                                                <TextBlock FontSize="12" Foreground="#666">
+                                                    <Run Text="Занять:"/>
+                                                    <Run Text="{Binding SessionsRemaining}"/>
+                                                    <Run Text="/"/>
+                                                    <Run Text="{Binding SessionsTotal}"/>
+                                                    <Run Text=" До:"/>
+                                                    <Run Text="{Binding ExpiryDate}"/>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+                            
+                            <Border Background="#F8F9FA"
+                                   Padding="12"
+                                   CornerRadius="5"
+                                   BorderBrush="#DEE2E6"
+                                   BorderThickness="1"
+                                   IsVisible="{Binding MembershipInfo, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                <TextBlock Text="{Binding MembershipInfo}"
+                                          FontSize="13"
+                                          Foreground="#495057"
+                                          TextWrapping="Wrap"/>
+                            </Border>
+                            
+                            <StackPanel Spacing="5">
+                                <TextBlock Text="Термін заморозки *" 
+                                          FontWeight="SemiBold"
+                                          Foreground="Black"
+                                          FontSize="14"/>
+                                <ComboBox ItemsSource="{Binding FreezeMonthsOptions}"
+                                         SelectedItem="{Binding FreezeMonths}"
+                                         HorizontalAlignment="Stretch"
+                                         FontSize="14">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock>
+                                                <Run Text="{Binding}"/>
+                                                <Run Text=" місяць" />
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                            
+                            <StackPanel Spacing="5">
+                                <TextBlock Text="Вартість заморозки" 
+                                          FontWeight="SemiBold"
+                                          Foreground="Black"
+                                          FontSize="14"/>
+                                <Border Background="#E3F2FD" 
+                                       Padding="12" 
+                                       CornerRadius="5"
+                                       BorderBrush="#2196F3"
+                                       BorderThickness="2">
+                                    <TextBlock FontSize="20"
+                                              FontWeight="Bold"
+                                              Foreground="#1565C0"
+                                              HorizontalAlignment="Center">
+                                        <Run Text="{Binding FreezePrice, StringFormat='{}{0:F2}'}"/>
+                                        <Run Text=" грн"/>
+                                    </TextBlock>
+                                </Border>
+                            </StackPanel>
+                            
+                            <StackPanel Spacing="5">
+                                <TextBlock Text="Метод оплати *" 
+                                          FontWeight="SemiBold"
+                                          Foreground="Black"
+                                          FontSize="14"/>
+                                <ComboBox ItemsSource="{Binding PaymentMethods}"
+                                         SelectedItem="{Binding FreezePaymentMethod}"
+                                         HorizontalAlignment="Stretch"
+                                         FontSize="14"/>
+                            </StackPanel>
+                            
+                        </StackPanel>
+                        
+                        <TextBlock Text="{Binding FreezeErrorMessage}"
+                                  Foreground="Red"
+                                  FontSize="13"
+                                  TextWrapping="Wrap"
+                                  IsVisible="{Binding FreezeErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                        
+                        <TextBlock Text="{Binding FreezeSuccessMessage}"
+                                  Foreground="Green"
+                                  FontSize="13"
+                                  TextWrapping="Wrap"
+                                  IsVisible="{Binding FreezeSuccessMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                        
+                        <StackPanel Orientation="Horizontal" 
+                                   Spacing="10"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,20,0,0">
+                            <Button Content="Заморозити абонемент" 
+                                   Command="{Binding FreezeMembershipCommand}"
+                                   Padding="20,10"
+                                   FontSize="14"
+                                   MinWidth="180"/>
+                            <Button Content="Очистити" 
+                                   Command="{Binding ClearFreezeCommand}"
+                                   Padding="20,10"
+                                   FontSize="14"
+                                   MinWidth="100"/>
+                        </StackPanel>
+                        
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+            
+            <!-- 3 вкладка -->
+            <TabItem Header="Інша покупка" FontSize="14">
+                <ScrollViewer>
+                    <StackPanel Spacing="20" MaxWidth="600" Margin="20">
+                        
+                        <TextBlock Text="Реєстрація іншої покупки"
+                                  FontSize="14"
+                                  Foreground="Gray"/>
+                        
+                        <Border Height="1" Background="Black"/>
+                        
+                        <StackPanel Spacing="15">
+                            
+                            <StackPanel Spacing="5">
+                                <TextBlock Text="ID клієнта *" 
+                                          FontWeight="SemiBold"
+                                          Foreground="Black"
+                                          FontSize="14"/>
+                                <NumericUpDown Value="{Binding CustomClientId}"
+                                              Minimum="0"
+                                              Maximum="999999"
+                                              Increment="1"
+                                              FormatString="0"
+                                              FontSize="14"
+                                              HorizontalAlignment="Stretch"/>
+                            </StackPanel>
+                            
+                            <StackPanel Spacing="5" 
+                                       IsVisible="{Binding CustomClientInfo, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                <TextBlock Text="Клієнт:" 
+                                          FontWeight="SemiBold"
+                                          Foreground="Black"
+                                          FontSize="14"/>
+                                <Border Background="#F0F0F0" 
+                                       Padding="10" 
+                                       CornerRadius="5">
+                                    <TextBlock Text="{Binding CustomClientInfo}"
+                                              FontSize="14"
+                                              Foreground="#333"/>
+                                </Border>
+                            </StackPanel>
+                            
+                            <StackPanel Spacing="5">
+                                <TextBlock Text="Опис покупки *" 
+                                          FontWeight="SemiBold"
+                                          Foreground="Black"
+                                          FontSize="14"/>
+                                <TextBox Text="{Binding CustomDescription}"
+                                        Watermark="Наприклад: Спортивна форма, Інвентар"
+                                        FontSize="14"/>
+                            </StackPanel>
+                            
+                            <StackPanel Spacing="5">
+                                <TextBlock Text="Ціна *" 
+                                          FontWeight="SemiBold"
+                                          Foreground="Black"
+                                          FontSize="14"/>
+                                <NumericUpDown Value="{Binding CustomPrice}"
+                                              Minimum="0"
+                                              Maximum="999999"
+                                              Increment="10"
+                                              FormatString="0.00"
+                                              FontSize="14"
+                                              HorizontalAlignment="Stretch"/>
+                            </StackPanel>
+                            
+                            <StackPanel Spacing="5">
+                                <TextBlock Text="Метод оплати *" 
+                                          FontWeight="SemiBold"
+                                          Foreground="Black"
+                                          FontSize="14"/>
+                                <ComboBox ItemsSource="{Binding PaymentMethods}"
+                                         SelectedItem="{Binding CustomPaymentMethod}"
+                                         HorizontalAlignment="Stretch"
+                                         FontSize="14"/>
+                            </StackPanel>
+                            
+                        </StackPanel>
+                        
+                        <TextBlock Text="{Binding CustomErrorMessage}"
+                                  Foreground="Red"
+                                  FontSize="13"
+                                  TextWrapping="Wrap"
+                                  IsVisible="{Binding CustomErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                        
+                        <TextBlock Text="{Binding CustomSuccessMessage}"
+                                  Foreground="Green"
+                                  FontSize="13"
+                                  TextWrapping="Wrap"
+                                  IsVisible="{Binding CustomSuccessMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                        
+                        <StackPanel Orientation="Horizontal" 
+                                   Spacing="10"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,20,0,0">
+                            <Button Content="Зберегти покупку" 
+                                   Command="{Binding SaveCustomPurchaseCommand}"
+                                   Padding="20,10"
+                                   FontSize="14"
+                                   MinWidth="150"/>
+                            <Button Content="Очистити" 
+                                   Command="{Binding ClearCustomCommand}"
+                                   Padding="20,10"
+                                   FontSize="14"
+                                   MinWidth="100"/>
+                        </StackPanel>
+                        
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+            
+        </TabControl>
+        
+    </Grid>
+    
+</UserControl>
