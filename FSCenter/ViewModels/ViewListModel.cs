@@ -1,11 +1,13 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using ClosedXML.Excel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FSCenter.Data;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
-using NLog;
 
 namespace FSCenter.ViewModels
 {
@@ -24,6 +26,9 @@ namespace FSCenter.ViewModels
 
         [ObservableProperty]
         private int totalVisits = 0;
+
+        [ObservableProperty]
+        private string reportError = "";
 
         public VisitsListViewModel()
         {
@@ -100,6 +105,76 @@ namespace FSCenter.ViewModels
         partial void OnSelectedDateChanged(DateTime value)
         {
             LoadVisits();
+        }
+
+        [RelayCommand]
+        private void ExportToExcel()
+        {
+            try
+            {
+                logger.Info("Початок логування");
+
+                if (Visits.Count == 0)
+                {
+                    ReportError = "Немає даних для експорту!";
+                    logger.Warn("Спроба експорту без даних");
+                    return;
+                }
+
+                using var workbook = new XLWorkbook();
+                var ws = workbook.AddWorksheet("Відвідування");
+
+                ws.Cell(1, 1).Value = "Клієнт";
+                ws.Cell(1, 2).Value = "Клуб";
+                ws.Cell(1, 3).Value = "Час";
+                ws.Cell(1, 4).Value = "Примітки";
+
+                var header = ws.Range(1, 1, 1, 4);
+                header.Style.Font.Bold = true;
+                header.Style.Fill.BackgroundColor = XLColor.LightGray;
+                header.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+
+                int row = 2;
+                foreach (var v in Visits)
+                {
+                    ws.Cell(row, 1).Value = v.ClientName;
+                    ws.Cell(row, 2).Value = v.ClubName;
+
+                    if (DateTime.TryParse(v.VisitTime, out var dateTime))
+                        ws.Cell(row, 3).Value = dateTime.ToString("HH:mm:ss");
+                    else
+                        ws.Cell(row, 3).Value = v.VisitTime;
+
+                    ws.Cell(row, 4).Value = v.Notes;
+                    row++;
+                }
+
+                ws.Cell(row + 1, 1).Value = "Всього відвідувань:";
+                ws.Cell(row + 1, 2).Value = Visits.Count;
+                ws.Cell(row + 1, 1).Style.Font.Bold = true;
+                ws.Cell(row + 1, 2).Style.Font.Bold = true;
+
+                ws.Columns().AdjustToContents();
+
+                string baseDir = Path.Combine(AppContext.BaseDirectory, "Reports", "Excel");
+
+                if (!Directory.Exists(baseDir))
+                    Directory.CreateDirectory(baseDir);
+
+                string fileName = $"Відвідування_{SelectedDate:yyyy-MM-dd}.xlsx";
+                string fullPath = Path.Combine(baseDir, fileName);
+
+                workbook.SaveAs(fullPath);
+
+                ReportError = $"Звіт збережено: {fileName}";
+                logger.Info($"Експорт успішний: {fullPath}");
+
+            }
+            catch (Exception ex)
+            {
+                ReportError = "Помилка експорту";
+                logger.Error($"Виникла помилка:{ex.Message}");
+            }
         }
     }
 
