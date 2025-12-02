@@ -253,13 +253,16 @@ namespace FSCenter.ViewModels
         [ObservableProperty] private string clientPhone = "";
         [ObservableProperty] private string clubName = "";
         [ObservableProperty] private int sessionsRemaining;
-        [ObservableProperty] private bool isPresent;
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(ButtonText))]
+        private bool isPresent;
         [ObservableProperty] private string visitTime = "";
         [ObservableProperty] private string notes = "";
         [ObservableProperty] private string startDate = "";
         [ObservableProperty] private string endDate = "";
 
-        public string ButtonText => " "; // ХАЙ ПОКИ ТАК ПРОСТО 
+        public string ButtonText => isPresent ? "Відмінити" : "Відмітити";
+
 
         public string TimeFormatted
         {

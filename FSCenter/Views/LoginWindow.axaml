@@ -4,6 +4,7 @@
         x:Class="FSCenter.Views.LoginWindow"
         x:DataType="vm:LoginViewModel"
         Title="Вхід в систему"
+        Icon="avares://FSCenter/Assets/avalonia-logo.ico"
         Width="450"
         Height="400"
         WindowStartupLocation="CenterScreen"

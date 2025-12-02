@@ -112,7 +112,7 @@ namespace FSCenter.ViewModels
         {
             try
             {
-                logger.Info("Початок логування");
+                logger.Info("Початок експорту");
 
                 if (Visits.Count == 0)
                 {
@@ -156,7 +156,7 @@ namespace FSCenter.ViewModels
 
                 ws.Columns().AdjustToContents();
 
-                string baseDir = Path.Combine(AppContext.BaseDirectory, "Reports", "Excel");
+                string baseDir = Path.Combine(AppContext.BaseDirectory, "Reports", "Excel", "Відвідування", "День");
 
                 if (!Directory.Exists(baseDir))
                     Directory.CreateDirectory(baseDir);

@@ -10,13 +10,40 @@
 
     <Grid RowDefinitions="Auto,Auto,Auto,*" Margin="20">
         
-        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,15">
+        <Grid Grid.Row="0" ColumnDefinitions="*, Auto,Auto, Auto" Margin="0,0,0,15">
             <TextBlock Grid.Column="0"
                       Text="Всі оплати"
                       FontSize="28"
                       Foreground="Black"
                       FontWeight="Bold"
                       VerticalAlignment="Center"/>
+
+            <TextBlock Grid.Column="1"
+                      Text="{Binding SuccessMessage}"
+                      Foreground="Green"
+                      FontSize="13"
+                      TextWrapping="Wrap"
+                      Margin="10,10,10,10"
+                      IsVisible="{Binding SuccessMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+            <Button Grid.Column="2"
+               Content="Звіт за день"
+               Command="{Binding ExportDayReportCommand}"
+               Padding="15,8"
+               FontSize="13"
+               Background="green"
+               Foreground="White"
+               Margin="0,0,10,0"/>
+
+            <Button Grid.Column="3"
+               Content="Звіт за місяць"
+               Command="{Binding ExportMonthReportCommand}"
+               Padding="15,8"
+               FontSize="13"
+               Background="green"
+               Foreground="White"/>
+
+            
             
         </Grid>
 
