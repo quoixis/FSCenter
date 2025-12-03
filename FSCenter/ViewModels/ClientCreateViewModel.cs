@@ -15,7 +15,7 @@ namespace FSCenter.ViewModels
         private string fullName = "";
 
         [ObservableProperty]
-        private string phone = "";
+        private string phone = "+380";
 
         [ObservableProperty]
         private string email = "";
@@ -85,12 +85,12 @@ namespace FSCenter.ViewModels
                 context.Clients.Add(client);
                 context.SaveChanges();
 
-                SuccessMessage = $"Клієнта '{FullName}' успішно додано!";
+                SuccessMessage = $"Клієнта '{FullName}' успішно додано! ID: {client.ClientId}";
                 logger.Info("Клієнтa успішно додано");
                 logger.Info($"Клієнт '{FullName}' успішно додано з ID {client.ClientId}");
 
-                // очищення за 2 секунди  працює
-                System.Threading.Tasks.Task.Delay(2000).ContinueWith(_ =>
+                // очищення за секунди  працює
+                System.Threading.Tasks.Task.Delay(5000).ContinueWith(_ =>
                 {
                     Clear();
                 }, System.Threading.Tasks.TaskScheduler.FromCurrentSynchronizationContext());
@@ -106,7 +106,7 @@ namespace FSCenter.ViewModels
         private void Clear()
         {
             FullName = "";
-            Phone = "";
+            Phone = "+380";
             Email = "";
             Age = null;
             Address = "";

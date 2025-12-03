@@ -1,5 +1,7 @@
 ﻿using FSCenter.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.IO;
 
 namespace FSCenter.Data
 {
@@ -20,7 +22,14 @@ namespace FSCenter.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
-                optionsBuilder.UseSqlite(@"Data Source=D:\Study\CourseProjectSC(2025-2026)\Project\SQL\SQLite\Project\main.db");
+            {
+                string dbPath = Path.Combine(
+                    AppContext.BaseDirectory,
+                    "Data",
+                    "main.db");
+
+                optionsBuilder.UseSqlite($"Data Source={dbPath}");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

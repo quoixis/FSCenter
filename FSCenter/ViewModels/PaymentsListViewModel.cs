@@ -113,8 +113,6 @@ namespace FSCenter.ViewModels
                 logger.Debug($"Фільтрація за текстом: '{SearchText}'");
                 query = query.Where(p =>
                     (p.Client?.FullName?.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ?? false) ||
-                    (p.Description?.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ?? false) ||
-                    (p.Client?.Phone?.Contains(SearchText) ?? false) ||
                     (p.Client?.ClientId.ToString().Contains(SearchText) ?? false)
                 );
             }

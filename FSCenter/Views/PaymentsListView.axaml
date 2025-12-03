@@ -60,7 +60,7 @@
                 <StackPanel Grid.Column="0" Spacing="5" Margin="0,0,10,0">
                     <TextBlock Text="Пошук" FontSize="12" FontWeight="SemiBold" Foreground="#495057"/>
                     <TextBox Text="{Binding SearchText}"
-                            Watermark="ID, iм'я, телефон, опис..."
+                            Watermark="ID, iм'я..."
                             FontSize="13"
                             Height="32"/>
                 </StackPanel>

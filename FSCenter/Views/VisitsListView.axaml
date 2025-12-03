@@ -41,7 +41,7 @@
             <ScrollViewer MaxHeight="300">
                 <StackPanel>
                     <Border Background="#F5F5F5" BorderBrush="#DDDDDD" BorderThickness="0,0,0,1" Padding="15,10">
-                        <Grid ColumnDefinitions="100,150,*,250">
+                        <Grid ColumnDefinitions="150,150,*,250">
                             <TextBlock Grid.Column="0" Text="Час" FontSize="13" FontWeight="Bold" Foreground="#666"/>
                             <TextBlock Grid.Column="1" Text="Клуб" FontSize="13" FontWeight="Bold" Foreground="#666"/>
                             <TextBlock Grid.Column="2" Text="Клієнт" FontSize="13" FontWeight="Bold" Foreground="#666"/>
@@ -53,11 +53,11 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border BorderBrush="#EEEEEE" BorderThickness="0,0,0,1" Padding="15,10">
-                                    <Grid ColumnDefinitions="100,150,*,250">
-                                        <TextBlock Grid.Column="0" Text="{Binding TimeFormatted}" FontSize="13" FontWeight="SemiBold" Foreground="#1976D2" VerticalAlignment="Center"/>
-                                        <TextBlock Grid.Column="1" Text="{Binding ClubName}" FontSize="12" Foreground="#E65100" VerticalAlignment="Center"/>
+                                    <Grid ColumnDefinitions="150,150,*,250">
+                                        <TextBlock Grid.Column="0" Text="{Binding TimeFormatted}" FontSize="13" FontWeight="SemiBold" Foreground="Black" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding ClubName}" FontSize="12" Foreground="Black" VerticalAlignment="Center"/>
                                         <TextBlock Grid.Column="2" Text="{Binding ClientName}" FontSize="13" Foreground="Black" VerticalAlignment="Center"/>
-                                        <TextBlock Grid.Column="3" Text="{Binding Notes}" FontSize="12" Foreground="#666" FontStyle="Italic" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="3" Text="{Binding Notes}" FontSize="12" Foreground="Black" FontStyle="Italic" TextWrapping="Wrap" VerticalAlignment="Center"/>
                                     </Grid>
                                 </Border>
                             </DataTemplate>
