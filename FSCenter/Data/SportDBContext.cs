@@ -23,10 +23,11 @@ namespace FSCenter.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                string dbPath = Path.Combine(
-                    AppContext.BaseDirectory,
-                    "Data",
-                    "main.db");
+                string projectDir = Directory.GetParent(AppContext.BaseDirectory)!.Parent!.Parent!.Parent!.FullName;
+                string folder = Path.Combine(projectDir, "Data");
+                Directory.CreateDirectory(folder);
+
+                string dbPath = Path.Combine(folder, "main.db");
 
                 optionsBuilder.UseSqlite($"Data Source={dbPath}");
             }
